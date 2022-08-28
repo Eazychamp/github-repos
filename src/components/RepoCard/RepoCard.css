@@ -1,0 +1,38 @@
+.repoCard {
+    width: 350px;
+    border-radius: 1rem;
+    min-height: 200px;
+    margin-bottom: 1.4rem;
+    overflow: hidden;
+    box-shadow: 0px 2px 8px 0px gray;
+    background-color: white;
+    padding: 1rem;
+  }
+
+  .cardInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card__name {
+    margin-top: 15px;
+    font-size: 1.6em;
+    font-weight: 600;
+  }
+  
+  .card__image {
+    height: 160px;
+    width: 160px;
+    border-radius: 50%;
+    margin-top: 15px;
+    box-shadow: 0 10px 50px rgb(184, 177, 180);
+  }
+
+  .card_details {
+    white-space: nowrap; 
+    width: 250px; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    font-weight: 600;
+  }

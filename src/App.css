@@ -1,0 +1,23 @@
+.App {
+  text-align: center;
+  padding: 1rem;
+}
+
+.sortButton {
+  padding: .2rem;
+  font-size: 12px;
+  /* background-color: rgb(208, 210, 216); */
+  border: 1px solid gray;
+  outline: none;
+  border-radius: .6rem;
+  margin-right: .4rem;
+}
+
+.cardContainer {
+   padding:  3rem 5rem;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-between;
+   justify-items: center;
+}
+
