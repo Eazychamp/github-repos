@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import { Alert } from "react-bootstrap";
 import "./App.css";
 import BarChart from "./components/BarChart/BarChart";
 import CustomModal from "./components/Modal/Modal";
@@ -45,7 +46,7 @@ function App() {
   const [resultList, setResultList] = useState([]);
   const [sortType, setSortType] = useState({});
   const [sortOrder, setSortOrder] = useState("");
-  const [isLoaded, setIsloaded] = useState(true);
+  const [isLoaded, setIsloaded] = useState({status : true});
   const [toggleChart, setToggleChart] = useState(false)
   const [paginate, setPaginate] = useState({
     pageCount: 1,
@@ -63,17 +64,21 @@ function App() {
 
   const fetchData = () => {
     if (searchText) {
-      setIsloaded(false);
+      setIsloaded({status : false});
       fetchProfileData({
         name: searchText,
         sort: sortType.value,
         order: sortOrder,
         page: paginate.pageCount,
       }).then((result) => {
-        setResultList(result.items);
-        setPaginate({ ...paginate, totalRecords: result.total_count });
-        setIsloaded(true);
-      });
+        if (result.items) {
+          setResultList(result.items);
+          setPaginate({ ...paginate, totalRecords: result.total_count });
+          setIsloaded({status : true, error : false});
+        } else {
+          setIsloaded({status : true, error : true, msg : result.message});
+        }
+      })
     } else {
       setResultList([]);
     }
@@ -85,7 +90,7 @@ function App() {
     }, 800);
 
     return () => clearTimeout(timer);
-  }, [searchText, sortOrder, sortType, paginate.pageCount]);
+  }, [searchText]);
 
   useEffect(() => {
     if (resultList.length > 0) {
@@ -93,13 +98,31 @@ function App() {
 	}
   }, [sortOrder, sortType, paginate.pageCount]);
 
-  if (!isLoaded) {
+  const handleCloseAlert = () => {
+    setSearchText('')
+    setSortType({})
+    setSortOrder('')
+    setIsloaded({status : true, error : false});
+  }
+
+  if (!isLoaded.status) {
     return (
       <div className="d-flex justify-content-center">
         <div className="spinner-border" role="status">
           <span className="sr-only">Loading...</span>
         </div>
       </div>
+    );
+  }
+
+  if (isLoaded.error) {
+    return (
+      <Alert variant="danger" onClose={handleCloseAlert} dismissible>
+        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+        <p>
+          {isLoaded.msg}
+        </p>
+      </Alert>
     );
   }
 
